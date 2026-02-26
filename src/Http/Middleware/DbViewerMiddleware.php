@@ -16,6 +16,7 @@ class DbViewerMiddleware
             abort(404);
         }
 
+
         // 1. Skip check for login routes
         $loginRoutes = [
             route('db-viewer.login', [], false),
@@ -41,6 +42,26 @@ class DbViewerMiddleware
             }
         }
 
+        // 4. Share Inertia Data
+        if (class_exists(\Inertia\Inertia::class)) {
+            $tables = [];
+            if (session()->has('db_viewer_authenticated') || !config('db-viewer.password')) {
+                $introspector = app(\Httpsnader1\DbViewer\Services\DatabaseIntrospector::class);
+                $tables = collect($introspector->getTables())->map(fn($t) => [
+                    'name' => $t,
+                    'row_count' => $introspector->getRowCount($t)
+                ])->values()->toArray();
+            }
+
+            \Inertia\Inertia::share([
+                'db_viewer' => [
+                    'tables' => $tables,
+                    'dbName' => \Illuminate\Support\Facades\DB::getDatabaseName(),
+                ],
+            ]);
+        }
+
         return $next($request);
     }
 }
+

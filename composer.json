@@ -32,16 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Httpsnader1\\DbViewer\\": "src/",
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Httpsnader1\\DbViewer\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Httpsnader1\\DbViewer\\Tests\\": "tests/",
-            "Tests\\": "tests/"
+            "Httpsnader1\\DbViewer\\Tests\\": "tests/"
         }
     },
     "extra": {

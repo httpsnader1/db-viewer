@@ -39,14 +39,7 @@ class DbViewerServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/js' => resource_path('js/vendor/db-viewer'),
             ], 'db-viewer-assets');
 
-            // publish blade views
-            $this->publishes([
-                __DIR__ . '/../resources/views' => resource_path('views/vendor/db-viewer'),
-            ], 'db-viewer-views');
         }
-
-        // ─── Views ────────────────────────────────────────────────────────────────
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'db-viewer');
 
         // ─── Routes ───────────────────────────────────────────────────────────────
         $this->loadRoutes();

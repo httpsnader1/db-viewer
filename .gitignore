@@ -1,4 +1,14 @@
 # Laravel app (workbench / dev only - NOT part of the package)
+app/
+bootstrap/
+public/
+storage/
+database/
+tests/
+artisan
+phpunit.xml
+vite.config.js
+package-lock.json
 vendor/
 node_modules/
 storage/
