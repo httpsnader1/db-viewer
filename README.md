@@ -7,30 +7,32 @@
 
 ---
 
-## Features
+## 🌟 Features
 
-- 📊 **Dashboard** – database stats, row distribution chart
-- 📋 **Tables List** – searchable grid of all tables with row counts
-- 🔍 **DataTable** – global search, per-column filters (text/number/date range/boolean), sortable columns, pagination
-- 👁️ **Column Visibility** – show/hide columns with localStorage persistence
-- 🪟 **Row Details Modal** – formatted JSON, booleans, null, dates
-- 🔐 **Authorization** – `Gate::define('viewDbViewer')` with easy override
-- ⚙️ **Config** – include/exclude tables, cache duration, per-page options
-- 🗄️ **Multi-driver** – MySQL & PostgreSQL support
+- 📊 **Interactive Dashboard** – View database stats, total records, and dynamic time-series charts using **ApexCharts**.
+- 📅 **Date Range Filtering** – Advanced chronological filtering via **Vue DatePicker** to instantly adjust dashboard charts.
+- 📋 **Tables List** – Searchable grid of all tables, automatically sorted by row counts for quick insights.
+- 🔍 **Advanced DataTable** – Global search, advanced per-column filters (text, number, date range, boolean), sortable columns, and pagination.
+- 👁️ **Column Visibility** – Dynamically show or hide columns with localStorage persistence.
+- 🪟 **Row Details Modal** – Clearly formatted JSON, booleans, nulls, and dates for deep inspection.
+- 🔐 **Built-in Authentication** – Secure your database view with a configurable password or `Gate::define('viewDbViewer')` with easy overrides.
+- ⚙️ **Highly Configurable** – Manage visible tables, chart metrics, cache durations, and pagination options via a central config file.
+- 🗄️ **Multi-driver Support** – Fully compatible with MySQL, PostgreSQL, and SQLite.
 
 ---
 
-## Requirements
+## 📋 Requirements
 
 | Requirement | Version |
 |-------------|---------|
 | PHP         | ^8.2    |
 | Laravel     | ^11 or ^12 |
 | Inertia     | ^2.0    |
+| Vue         | ^3.0    |
 
 ---
 
-## Installation
+## 🚀 Installation
 
 ### 1. Install via Composer
 
@@ -38,215 +40,157 @@
 composer require httpsnader1/db-viewer
 ```
 
-> **Using a local path repo (dev)?** Add to your host app's `composer.json`:
-> ```json
-> "repositories": [
->   {
->     "type": "path",
->     "url": "../db-viewer"
->   }
-> ]
-> ```
-> Then: `composer require httpsnader1/db-viewer @dev`
-
----
-
-### 2. Publish Config
+### 2. Publish Config & Assets
 
 ```bash
+# Publish Configuration File
 php artisan vendor:publish --tag=db-viewer-config
-```
 
-This creates `config/db-viewer.php` in your application.
-
----
-
-### 3. Publish Vue Assets
-
-```bash
+# Publish Vue Assets
 php artisan vendor:publish --tag=db-viewer-assets
 ```
 
-Assets are copied to `resources/js/vendor/db-viewer/`.
+This creates `config/db-viewer.php` and copies the Vue components to `resources/js/vendor/db-viewer/`.
 
----
+### 3. Install NPM Dependencies
+
+DB Viewer uses several frontend packages to deliver a premium experience. Install them via your package manager:
+
+```bash
+npm install @heroicons/vue vue3-apexcharts apexcharts @vuepic/vue-datepicker
+```
 
 ### 4. Register Pages in Vite
 
-In your `vite.config.js`, add the package pages to the Inertia resolver:
+In your host application's `vite.config.js`, configure the Inertia plugin to resolve the package's pages:
 
 ```js
-resolve: (name) =>
-  resolvePageComponent(
-    `./Pages/${name}.vue`,
-    {
-      ...import.meta.glob('./Pages/**/*.vue'),
-      ...import.meta.glob('./vendor/db-viewer/**/*.vue'),
-    }
-  ),
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
+        }),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
+    ],
+    resolve: {
+        alias: {
+            // Optional but recommended alias
+            '@db-viewer': '/resources/js/vendor/db-viewer',
+        },
+    },
+});
 ```
 
-Or add an alias:
+And in your `app.js` (where you resolve Inertia pages):
+
 ```js
-resolve: {
-  alias: {
-    '@db-viewer': resolve(__dirname, 'resources/js/vendor/db-viewer'),
-  },
+resolve: (name) => {
+    const pages = {
+        ...import.meta.glob('./Pages/**/*.vue', { eager: true }),
+        ...import.meta.glob('./vendor/db-viewer/Pages/**/*.vue', { eager: true })
+    };
+    
+    // Check if the route is a DB Viewer route
+    if (name.startsWith('DbViewer/')) {
+        return pages[`./vendor/db-viewer/Pages/${name.replace('DbViewer/', '')}.vue`];
+    }
+    
+    return pages[`./Pages/${name}.vue`];
 },
 ```
 
----
-
-### 5. Install Heroicons (required for icons)
-
-```bash
-npm install @heroicons/vue
-```
-
----
-
-### 6. Install Ziggy (named routes in JS)
+### 5. Install Ziggy (For named routes in JS)
 
 ```bash
 composer require tightenco/ziggy
 php artisan ziggy:generate
 ```
+*(Make sure to add `@routes` to your Blade layout and `ZiggyVue` to your `app.js` setup).*
 
-Add `@routes` to your Blade layout and `ZiggyVue` to `app.js`.
+### 6. Compile Assets
+
+```bash
+npm run dev
+# or npm run build
+```
 
 ---
 
-### 7. Set Up Inertia Root View
+## ⚙️ Configuration
 
-The package uses Inertia, so your application must have Inertia set up.
-The package will use the host app's `resources/views/app.blade.php` by default.
-
----
-
-## Configuration
-
-`config/db-viewer.php`:
+The package behavior can be customized by editing `config/db-viewer.php`:
 
 ```php
 return [
-    'enabled'        => true,               // enable/disable entire package
-    'path'           => 'db-explorer',       // URL prefix
-    'middleware'     => ['web'],             // base middleware
-
-    // Authorization
-    'auth_callback'  => null,               // callable or null
-    'allowed_emails' => [],                 // allowed in production
+    'enabled'        => true,                // Quick toggle to enable/disable the package
+    'path'           => 'db-viewer',         // URL prefix (e.g., your-app.com/db-viewer)
+    'password'       => 'password',          // Change this! Base password protection
 
     // Table whitelist/blacklist
-    'include_tables' => [],                 // if set, only these are shown
-    'exclude_tables' => ['migrations', ...],
+    'include_tables' => [],                  // If populated, ONLY these tables are visible
+    'exclude_tables' => ['migrations', 'password_resets', 'sessions', ...],
 
     // Performance
-    'cache_duration' => 300,               // seconds (0 = disabled)
+    'cache_duration' => 300,                 // Seconds to cache schema metadata (0 = disabled)
 
-    // UI
-    'per_page_options'      => [10, 25, 50, 100],
-    'default_per_page'      => 25,
-    'dashboard_top_tables'  => 10,
+    // Dashboard Time-Series Charts
+    'dashboard_charts' => [
+        [
+            'table' => 'users',
+            'column' => 'created_at',
+            'label' => 'New Users',
+            'color' => '#8b5cf6', // Stylish Violet
+        ],
+    ],
 ];
 ```
 
 ---
 
-## Authorization
+## 🔐 Security & Authorization
 
-### Default Behavior
+DB Viewer uses a robust middleware stack:
 
-- **Local environment** → always accessible
-- **Other environments** → checks `allowed_emails` config
-
-### Custom Gate (Recommended)
-
-In your `AppServiceProvider::boot()`:
+1. **Password Protection:** Out-of-the-box, the package asks for a password (defined in `config/db-viewer.php`). 
+2. **Laravel Gate:** You can define a custom Gate in your `AppServiceProvider` for role-based access instead of (or alongside) the password.
 
 ```php
 use Illuminate\Support\Facades\Gate;
 
 Gate::define('viewDbViewer', function ($user) {
-    return $user->hasRole('admin');
+    return $user->hasRole('super-admin');
 });
 ```
-
-### Custom Callback via Config
-
-```php
-// config/db-viewer.php
-'auth_callback' => function ($user) {
-    return $user?->is_admin === true;
-},
-```
+3. **Internal Sandboxing:** DB Viewer uses safe, parameterized queries and strictly whitelists table names to prevent SQL injections.
 
 ---
 
-## Routes
+## 🛣 Routes
 
-| Method | URL                               | Name                    |
-|--------|-----------------------------------|-------------------------|
-| GET    | `/db-explorer`                    | `db-viewer.dashboard`   |
-| GET    | `/db-explorer/tables`             | `db-viewer.tables`      |
-| GET    | `/db-explorer/tables/{table}`     | `db-viewer.tables.show` |
-| GET    | `/db-explorer/tables/{table}/row` | `db-viewer.tables.row`  |
+Once installed, visit **`/db-viewer`** in your browser.
 
----
-
-## Security Notes
-
-- All table/column names are **whitelisted** against the schema – no raw string injection possible
-- Table names are validated against the allowed list before any query executes
-- Column filters use parameterized queries (no raw SQL string interpolation)
-- The `Gate::define('viewDbViewer')` check runs on every request via middleware
+| Method | URI                                | Name                    |
+|--------|------------------------------------|-------------------------|
+| GET    | `/db-viewer/login`                 | `db-viewer.login`       |
+| GET    | `/db-viewer`                       | `db-viewer.dashboard`   |
+| GET    | `/db-viewer/tables`                | `db-viewer.tables`      |
+| GET    | `/db-viewer/tables/{table}`        | `db-viewer.tables.show` |
+| GET    | `/db-viewer/tables/{table}/row`    | `db-viewer.tables.row`  |
 
 ---
 
-## Extensibility
+## 📄 License
 
-- **Override the Gate** in `AppServiceProvider` for custom auth logic
-- **Exclude sensitive tables** via `exclude_tables` config
-- **Cache metadata** to reduce DB introspection calls on each request
-- **Column preferences** stored in `localStorage` by default; set `column_prefs_storage = 'database'` to enable DB storage (requires custom migration – planned feature)
-
----
-
-## Development / Local Setup
-
-```bash
-# Clone the repo
-git clone https://github.com/httpsnader1/db-viewer.git
-cd db-viewer
-
-# Install PHP deps
-composer install
-
-# Install JS deps
-npm install
-
-# Copy .env and configure your database
-cp .env.example .env
-php artisan key:generate
-
-# Run migrations (for the demo app)
-php artisan migrate --seed
-
-# Start dev server
-php artisan serve
-npm run dev
-```
-
----
-
-## Screenshots
-
-| Dashboard | Tables | Table View |
-|-----------|--------|------------|
-| Stats, row distribution chart | Searchable grid of tables | DataTable with search, filters, sort, pagination |
-
----
-
-## License
-
-MIT © [Mohamed Nader](https://github.com/httpsnader1)
+The MIT License (MIT). Created by [Mohamed Nader](https://github.com/httpsnader1).
