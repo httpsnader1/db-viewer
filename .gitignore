@@ -1,0 +1,26 @@
+# Laravel app (workbench / dev only - NOT part of the package)
+vendor/
+node_modules/
+storage/
+bootstrap/cache/
+.env
+.env.backup
+.env.production
+*.log
+
+# Build artifacts
+public/hot
+public/storage
+public/build
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.phpunit.cache
+.phpunit.result.cache
+
+# OS
+.DS_Store
+Thumbs.db

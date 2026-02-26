@@ -1,0 +1,56 @@
+{
+    "name": "httpsnader1/db-viewer",
+    "description": "A professional Database Explorer package for Laravel with Inertia.js + Vue 3 + Tailwind CSS",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "database",
+        "explorer",
+        "inertia",
+        "vue",
+        "tailwind"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mohamed Nader",
+            "email": "httpsnader1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0|^12.0",
+        "illuminate/database": "^11.0|^12.0",
+        "illuminate/routing": "^11.0|^12.0",
+        "illuminate/http": "^11.0|^12.0",
+        "inertiajs/inertia-laravel": "^2.0",
+        "tightenco/ziggy": "^2.6"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Httpsnader1\\DbViewer\\": "src/",
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Httpsnader1\\DbViewer\\Tests\\": "tests/",
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Httpsnader1\\DbViewer\\DbViewerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
