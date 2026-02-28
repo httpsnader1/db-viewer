@@ -4,7 +4,7 @@
     v-if="column.type === 'string'"
     v-model="localValue"
     type="text"
-    placeholder="Filter…"
+    :placeholder="$t('filter_placeholder')"
     class="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300 placeholder-gray-600 focus:outline-none focus:border-violet-500"
     @input="emit('update:modelValue', localValue || undefined)"
   />
@@ -14,7 +14,7 @@
     v-else-if="column.type === 'integer' || column.type === 'float'"
     v-model="localValue"
     type="number"
-    placeholder="= value"
+    :placeholder="$t('equals_value')"
     class="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300 placeholder-gray-600 focus:outline-none focus:border-violet-500"
     @input="emit('update:modelValue', localValue || undefined)"
   />
@@ -26,9 +26,9 @@
     class="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300 focus:outline-none focus:border-violet-500"
     @change="emit('update:modelValue', localValue === '' ? undefined : localValue)"
   >
-    <option value="">Any</option>
-    <option value="1">True</option>
-    <option value="0">False</option>
+    <option value="">{{ $t('any') }}</option>
+    <option value="1">{{ $t('true') }}</option>
+    <option value="0">{{ $t('false') }}</option>
   </select>
 
   <!-- DateTime: range from/to -->
@@ -37,14 +37,14 @@
       v-model="rangeFrom"
       type="date"
       class="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300 focus:outline-none focus:border-violet-500"
-      placeholder="From"
+      :placeholder="$t('from')"
       @change="emitRange"
     />
     <input
       v-model="rangeTo"
       type="date"
       class="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300 focus:outline-none focus:border-violet-500"
-      placeholder="To"
+      :placeholder="$t('to')"
       @change="emitRange"
     />
   </div>

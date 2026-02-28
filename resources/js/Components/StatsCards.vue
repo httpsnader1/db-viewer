@@ -23,6 +23,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 import {
   CircleStackIcon,
   TableCellsIcon,
@@ -40,7 +41,7 @@ const totalRows = computed(() =>
 
 const cards = computed(() => [
   {
-    label:     'Database',
+    label:     usePage().props.db_viewer.translations['database'] || 'Database',
     value:     props.stats.database ?? '—',
     icon:      CircleStackIcon,
     iconBg:    'bg-violet-500/15',
@@ -48,7 +49,7 @@ const cards = computed(() => [
     blob:      'bg-violet-500',
   },
   {
-    label:     'Total Tables',
+    label:     usePage().props.db_viewer.translations['total_tables'] || 'Total Tables',
     value:     props.stats.total_tables ?? 0,
     icon:      TableCellsIcon,
     iconBg:    'bg-indigo-500/15',
@@ -56,7 +57,7 @@ const cards = computed(() => [
     blob:      'bg-indigo-500',
   },
   {
-    label:     'Total Rows (top tables)',
+    label:     usePage().props.db_viewer.translations['total_rows_top_tables'] || 'Total Rows (top tables)',
     value:     totalRows.value.toLocaleString(),
     icon:      ServerIcon,
     iconBg:    'bg-emerald-500/15',
@@ -64,7 +65,7 @@ const cards = computed(() => [
     blob:      'bg-emerald-500',
   },
   {
-    label:     'Driver',
+    label:     usePage().props.db_viewer.translations['db_driver'] || 'Driver',
     value:     props.stats.driver ?? '—',
     icon:      CpuChipIcon,
     iconBg:    'bg-amber-500/15',

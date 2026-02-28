@@ -16,15 +16,15 @@
             </svg>
           </div>
           <div class="text-center">
-            <h1 class="text-2xl font-bold tracking-tight text-white">DB Viewer</h1>
-            <p class="text-sm text-gray-400 mt-1">Please enter your password to continue</p>
+            <h1 class="text-2xl font-bold tracking-tight text-white">{{ $t('db_viewer_title') }}</h1>
+            <p class="text-sm text-gray-400 mt-1">{{ $t('login_subtitle') }}</p>
           </div>
         </div>
 
         <!-- Form -->
         <form @submit.prevent="submit" class="space-y-6">
           <div class="space-y-2">
-            <label for="password" class="text-xs font-semibold uppercase tracking-wider text-gray-500 ml-1">Password</label>
+            <label for="password" class="text-xs font-semibold uppercase tracking-wider text-gray-500 ml-1">{{ $t('password_label') }}</label>
             <div class="relative group">
               <input
                 id="password"
@@ -35,7 +35,7 @@
                   'w-full bg-gray-950 border rounded-2xl px-5 py-4 text-white placeholder-gray-600 outline-none transition-all duration-300',
                   errors.password ? 'border-red-500/50 focus:border-red-500' : 'border-gray-800 focus:border-violet-500 group-hover:border-gray-700'
                 ]"
-                placeholder="••••••••"
+                :placeholder="$t('password_placeholder')"
               />
               <div v-if="errors.password" class="absolute -bottom-6 left-1 text-[11px] text-red-500 font-medium">
                 {{ errors.password }}
@@ -48,14 +48,14 @@
             :disabled="form.processing"
             class="relative w-full group overflow-hidden bg-white text-gray-950 font-bold py-4 rounded-2xl transition-all duration-300 hover:bg-violet-50 active:scale-[0.98] disabled:opacity-50"
           >
-            <div class="absolute inset-0 bg-gradient-to-r from-violet-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity" />
-            <span v-if="!form.processing">Login to Dashboard</span>
+            <div class="absolute inset-0 bg-gradient-to-r from-violet-500 to-indigo-600 opacity-0 group-hover:opacity-10 transition-opacity" />
+            <span v-if="!form.processing">{{ $t('login_button') }}</span>
             <span v-else class="flex items-center justify-center gap-2">
               <svg class="animate-spin h-4 w-4 text-gray-950" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Verifying...
+              {{ $t('verifying') }}
             </span>
           </button>
         </form>
@@ -64,7 +64,7 @@
         <div class="mt-8 pt-6 border-t border-gray-800/50">
           <div class="flex items-center justify-between">
             <div class="flex flex-col">
-              <span class="text-[9px] text-gray-600 font-bold uppercase tracking-wider">Made With <span v-text="`❤️`" class="animate-pulse"/> By</span>
+              <span class="text-[9px] text-gray-600 font-bold uppercase tracking-wider">{{ $t('made_with') }} <span v-text="`❤️`" class="animate-pulse"/> {{ $t('by') }}</span>
               <span class="text-xs font-bold text-gray-400">Mohamed Nader</span>
             </div>
             <div class="flex items-center gap-3">
@@ -77,7 +77,7 @@
             </div>
           </div>
           <p class="text-center text-[9px] text-gray-700 mt-4 uppercase tracking-[0.2em]">
-            Secured Session · DB Viewer v1.0
+            {{ $t('secured_session') }} · DB Viewer
           </p>
         </div>
       </div>

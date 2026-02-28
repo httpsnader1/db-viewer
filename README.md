@@ -17,7 +17,27 @@
 - 🪟 **Row Details Modal** – Clearly formatted JSON, booleans, nulls, and dates for deep inspection.
 - 🔐 **Built-in Authentication** – Secure your database view with a configurable password or `Gate::define('viewDbViewer')` with easy overrides.
 - ⚙️ **Highly Configurable** – Manage visible tables, chart metrics, cache durations, and pagination options via a central config file.
+- 🌍 **Internationalization (I18n)** – Full multi-language support (English & Arabic included) with automatic RTL (Right-to-Left) layout for Arabic.
 - 🗄️ **Multi-driver Support** – Fully compatible with MySQL, PostgreSQL, and SQLite.
+
+---
+
+## 🌍 Localization & I18n
+
+DB Viewer supports multiple languages out of the box. It currently includes:
+- 🇺🇸 **English (EN)**
+- 🇸🇦 **Arabic (AR)** — with full RTL layout support.
+
+### Adding a New Language
+
+1. Create a new JSON file in `lang/` (e.g., `es.json` for Spanish).
+2. Copy the keys from `en.json` and translate the values.
+3. The package will automatically detect and use the locale based on `app()->getLocale()`.
+
+To publish the translation files for customization:
+```bash
+php artisan vendor:publish --tag=db-viewer-lang
+```
 
 ---
 

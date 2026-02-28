@@ -1,6 +1,12 @@
 <template>
+  <div :dir="page.props.db_viewer.locale === 'ar' ? 'rtl' : 'ltr'" class="min-h-screen bg-gray-950">
   <!-- Sidebar Navigation -->
-  <aside class="fixed inset-y-0 left-0 w-64 bg-gray-900 border-r border-gray-800 flex flex-col z-40">
+  <aside 
+    :class="[
+      'fixed inset-y-0 w-64 bg-gray-900 border-gray-800 flex flex-col z-40',
+      page.props.db_viewer.locale === 'ar' ? 'right-0 border-l' : 'left-0 border-r'
+    ]"
+  >
     <!-- Logo -->
     <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-800">
       <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/25">
@@ -10,7 +16,7 @@
         </svg>
       </div>
       <div>
-        <p class="text-sm font-semibold text-white">DB Viewer</p>
+        <p class="text-sm font-semibold text-white">{{ $t('db_viewer_title') }}</p>
         <p class="text-xs text-gray-500">{{ database }}</p>
       </div>
     </div>
@@ -27,23 +33,26 @@
         ]"
       >
         <HomeIcon class="w-4 h-4 flex-shrink-0" />
-        Dashboard
+        {{ $t('dashboard') }}
       </Link>
 
       <div class="px-3 mb-2 flex items-center justify-between">
-         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Tables</span>
+         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{ $t('tables') }}</span>
          <span class="text-[10px] bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">{{ allTables.length }}</span>
       </div>
 
       <!-- Global Search Tables -->
       <div class="px-3 mb-4">
         <div class="relative group">
-          <MagnifyingGlassIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600 transition-colors group-focus-within:text-violet-500" />
+          < MagnifyingGlassIcon :class="['absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600 transition-colors group-focus-within:text-violet-500', page.props.db_viewer.locale === 'ar' ? 'right-3' : 'left-3']" />
           <input 
             v-model="tableSearch"
             type="text" 
-            placeholder="Search tables..." 
-            class="w-full bg-gray-950/50 border border-gray-800 rounded-lg pl-9 pr-3 py-1.5 text-[12px] text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-all"
+            :placeholder="$t('search_tables_placeholder')" 
+            :class="[
+              'w-full bg-gray-950/50 border border-gray-800 rounded-lg py-1.5 text-[12px] text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-all',
+              page.props.db_viewer.locale === 'ar' ? 'pr-9 pl-3' : 'pl-9 pr-3'
+            ]"
           />
         </div>
       </div>
@@ -72,7 +81,7 @@
 
     <!-- Sidebar Footer (Author) -->
     <div class="p-4 border-t border-gray-800 bg-gray-950/50">
-      <p class="text-[10px] text-gray-500 font-medium uppercase tracking-wider mb-3">Made With <span v-text="`❤️`" class="animate-pulse"/> By</p>
+      <p class="text-[10px] text-gray-500 font-medium uppercase tracking-wider mb-3">{{ $t('made_with') }} <span v-text="`❤️`" class="animate-pulse"/> {{ $t('by') }}</p>
       <div class="flex items-center justify-between">
         <span class="text-xs font-bold text-gray-300">Mohamed Nader</span>
         <div class="flex items-center gap-2">
@@ -90,7 +99,12 @@
   </aside>
 
   <!-- Main Content -->
-  <div class="pl-64 min-h-screen flex flex-col">
+  <div 
+    :class="[
+      'min-h-screen flex flex-col',
+      page.props.db_viewer.locale === 'ar' ? 'pr-64' : 'pl-64'
+    ]"
+  >
     <!-- Top Bar -->
     <header class="sticky top-0 z-30 bg-gray-950/80 backdrop-blur-sm border-b border-gray-800 px-6 py-3 flex items-center gap-6">
       <!-- Breadcrumbs -->
@@ -114,10 +128,10 @@
         <button
           @click="logout"
           class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-red-500/70 hover:text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all duration-150"
-          title="Logout"
+          :title="$t('logout')"
         >
-          <ArrowLeftOnRectangleIcon class="w-3.5 h-3.5" />
-          <span>Logout</span>
+          <ArrowLeftOnRectangleIcon :class="['w-3.5 h-3.5', page.props.db_viewer.locale === 'ar' ? 'rotate-180' : '']" />
+          <span>{{ $t('logout') }}</span>
         </button>
       </div>
     </header>
@@ -127,6 +141,7 @@
     <main class="flex-1 p-6">
       <slot />
     </main>
+  </div>
   </div>
 </template>
 
@@ -181,7 +196,7 @@ const isActive = (href) => {
 const props = defineProps({
   breadcrumbs: {
     type: Array,
-    default: () => ['DB Viewer'],
+    default: () => [],
   },
 })
 </script>

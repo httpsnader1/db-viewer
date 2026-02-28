@@ -16,10 +16,17 @@ createInertiaApp({
         ),
 
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(ZiggyVue)
-            .mount(el)
+            .use(ZiggyVue);
+
+        // Global translation helper
+        app.config.globalProperties.$t = (key) => {
+            const translations = props.initialPage.props.db_viewer?.translations || {};
+            return translations[key] || key;
+        };
+
+        app.mount(el);
     },
 
     progress: {

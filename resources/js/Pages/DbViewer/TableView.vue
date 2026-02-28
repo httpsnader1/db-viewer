@@ -1,5 +1,5 @@
 <template>
-  <DbViewerLayout :breadcrumbs="['DB Viewer', 'Tables', table]">
+  <DbViewerLayout :breadcrumbs="[$t('db_viewer_title'), $t('tables'), table]">
     <div class="space-y-5">
       <!-- Header -->
       <div class="flex flex-wrap items-center justify-between gap-4">
@@ -14,7 +14,7 @@
             <div class="flex items-center gap-2">
               <h1 class="text-2xl font-bold text-white tracking-tight">{{ table }}</h1>
               <span class="text-[10px] bg-violet-500/10 text-violet-400 border border-violet-500/20 px-2 py-0.5 rounded-md font-mono uppercase tracking-widest">
-                {{ pagination.total.toLocaleString() }} records
+                {{ pagination.total.toLocaleString() }} {{ $t('records') }}
               </span>
             </div>
           </div>
@@ -31,7 +31,7 @@
             ]"
           >
             <FunnelIcon class="w-4 h-4" />
-            Filters
+            {{ $t('filters') || 'Filters' }}
             <span v-if="localAdvancedFilters.length" class="ml-1 px-1.5 py-0.5 bg-violet-600 text-white text-[10px] rounded-md font-mono">
               {{ localAdvancedFilters.length }}
             </span>

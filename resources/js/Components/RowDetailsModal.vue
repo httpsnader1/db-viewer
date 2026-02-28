@@ -19,8 +19,8 @@
                 <EyeIcon class="w-4 h-4 text-violet-400" />
               </div>
               <div>
-                <h2 class="text-base font-semibold text-white">Row Details</h2>
-                <p class="text-xs text-gray-500">{{ Object.keys(row ?? {}).length }} fields</p>
+                <h2 class="text-base font-semibold text-white">{{ $t('row_details') }}</h2>
+                <p class="text-xs text-gray-500">{{ Object.keys(row ?? {}).length }} {{ $t('fields') }}</p>
               </div>
             </div>
             <button
@@ -33,9 +33,9 @@
 
           <!-- Show hidden toggle -->
           <div class="px-6 py-2 border-b border-gray-800/60 flex items-center justify-between bg-gray-900/50">
-            <span class="text-xs text-gray-500">Showing all {{ Object.keys(row ?? {}).length }} columns</span>
+            <span class="text-xs text-gray-500">{{ $t('showing_all') }} {{ Object.keys(row ?? {}).length }} {{ $t('columns') }}</span>
             <label class="flex items-center gap-2 cursor-pointer">
-              <span class="text-xs text-gray-400">Format values</span>
+              <span class="text-xs text-gray-400">{{ $t('format_values') }}</span>
               <div
                 @click="formatted = !formatted"
                 :class="['relative w-9 h-5 rounded-full transition-colors cursor-pointer', formatted ? 'bg-violet-600' : 'bg-gray-700']"
@@ -94,7 +94,7 @@
               @click="$emit('close')"
               class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm text-gray-300 hover:text-white transition-colors"
             >
-              Close
+              {{ $t('close') }}
             </button>
           </div>
         </div>

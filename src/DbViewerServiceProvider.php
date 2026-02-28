@@ -39,7 +39,14 @@ class DbViewerServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/js' => resource_path('js/vendor/db-viewer'),
             ], 'db-viewer-assets');
 
+            // publish translations
+            $this->publishes([
+                __DIR__ . '/../lang' => lang_path('vendor/db-viewer'),
+            ], 'db-viewer-lang');
         }
+
+        // ─── Translations ────────────────────────────────────────────────────────
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'db-viewer');
 
         // ─── Routes ───────────────────────────────────────────────────────────────
         $this->loadRoutes();

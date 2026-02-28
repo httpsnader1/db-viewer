@@ -38,7 +38,7 @@ class DbViewerMiddleware
             // Only abort if user IS logged in but doesn't have gate permission
             // Or skip gate if only using password
             if (! $configPassword) {
-                abort(403, 'Unauthorized access to DB Viewer.');
+                abort(403, trans('db-viewer::unauthorized_access'));
             }
         }
 
@@ -53,10 +53,41 @@ class DbViewerMiddleware
                 ])->values()->toArray();
             }
 
+            $locale = app()->getLocale();
+            $packageLangPath = __DIR__ . '/../../../lang';
+            $appLangPath     = function_exists('lang_path') ? lang_path('vendor/db-viewer') : base_path('lang/vendor/db-viewer');
+            
+            $translations = [];
+            
+            // 1. Load English fallback from package
+            if (file_exists("$packageLangPath/en.json")) {
+                $translations = json_decode(file_get_contents("$packageLangPath/en.json"), true) ?? [];
+            }
+            
+            // 2. Load English from app (override)
+            if (file_exists("$appLangPath/en.json")) {
+                $appEn = json_decode(file_get_contents("$appLangPath/en.json"), true) ?? [];
+                $translations = array_merge($translations, $appEn);
+            }
+            
+            // 3. Load current locale from package
+            if ($locale !== 'en' && file_exists("$packageLangPath/$locale.json")) {
+                $currentTrans = json_decode(file_get_contents("$packageLangPath/$locale.json"), true) ?? [];
+                $translations = array_merge($translations, $currentTrans);
+            }
+
+            // 4. Load current locale from app (override)
+            if ($locale !== 'en' && file_exists("$appLangPath/$locale.json")) {
+                $appLocale = json_decode(file_get_contents("$appLangPath/$locale.json"), true) ?? [];
+                $translations = array_merge($translations, $appLocale);
+            }
+
             \Inertia\Inertia::share([
                 'db_viewer' => [
                     'tables' => $tables,
                     'dbName' => \Illuminate\Support\Facades\DB::getDatabaseName(),
+                    'translations' => $translations,
+                    'locale' => $locale,
                 ],
             ]);
         }

@@ -5,7 +5,7 @@
     class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-violet-500/40 text-sm text-gray-300 hover:text-white transition-all duration-150"
   >
     <AdjustmentsHorizontalIcon class="w-4 h-4" />
-    Columns
+    {{ $t('columns') }}
     <span class="text-xs bg-violet-500/20 text-violet-400 px-1.5 py-0.5 rounded-full font-medium">
       {{ visibleCount }}/{{ columns.length }}
     </span>
@@ -22,11 +22,11 @@
         <div class="w-64 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl shadow-black/50 overflow-hidden">
           <!-- Header -->
           <div class="flex items-center justify-between px-4 py-3 border-b border-gray-800">
-            <span class="text-sm font-semibold text-white">Column Visibility</span>
+            <span class="text-sm font-semibold text-white">{{ $t('column_visibility') }}</span>
             <div class="flex items-center gap-2">
-              <button @click="toggleAll(true)"  class="text-xs text-violet-400 hover:text-violet-300">All</button>
+              <button @click="toggleAll(true)"  class="text-xs text-violet-400 hover:text-violet-300">{{ $t('all') }}</button>
               <span class="text-gray-700">·</span>
-              <button @click="toggleAll(false)" class="text-xs text-gray-500 hover:text-gray-300">None</button>
+              <button @click="toggleAll(false)" class="text-xs text-gray-500 hover:text-gray-300">{{ $t('none') }}</button>
               <button @click="open = false" class="ml-2 text-gray-500 hover:text-white">
                 <XMarkIcon class="w-4 h-4" />
               </button>
@@ -58,7 +58,7 @@
               @click="reset"
               class="w-full text-xs text-gray-500 hover:text-white transition-colors text-center py-1"
             >
-              Reset to defaults
+              {{ $t('reset_to_defaults') }}
             </button>
           </div>
         </div>

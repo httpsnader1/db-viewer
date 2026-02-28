@@ -37,7 +37,7 @@ class DbViewerController extends Controller
             return redirect()->route('db-viewer.dashboard');
         }
 
-        return back()->withErrors(['password' => 'Incorrect password.']);
+        return back()->withErrors(['password' => trans('db-viewer::incorrect_password')]);
     }
 
     public function logout(): \Illuminate\Http\RedirectResponse
@@ -135,13 +135,13 @@ class DbViewerController extends Controller
         $val = $request->query('pk_value');
 
         if (! $pk || $val === null) {
-            return response()->json(['error' => 'No primary key available'], 400);
+            return response()->json(['error' => trans('db-viewer::no_primary_key')], 400);
         }
 
         $row = $this->queryService->findRow($table, $pk, $val);
 
         if (! $row) {
-            return response()->json(['error' => 'Row not found'], 404);
+            return response()->json(['error' => trans('db-viewer::row_not_found')], 404);
         }
 
         return response()->json(['row' => (array) $row]);
@@ -154,7 +154,7 @@ class DbViewerController extends Controller
         $allowed = $this->introspector->getTables();
 
         if (! in_array($table, $allowed, true)) {
-            abort(404, "Table [{$table}] not found or not allowed.");
+            abort(404, trans('db-viewer::table_not_found', ['table' => $table]));
         }
     }
 }

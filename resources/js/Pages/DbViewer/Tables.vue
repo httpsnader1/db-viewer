@@ -1,22 +1,22 @@
 <template>
-  <DbViewerLayout :breadcrumbs="['DB Viewer', 'Tables']">
+  <DbViewerLayout :breadcrumbs="[$t('db_viewer_title'), $t('tables')]">
     <div class="space-y-6">
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-white">Tables</h1>
+          <h1 class="text-2xl font-bold text-white">{{ $t('tables') }}</h1>
           <p class="text-sm text-gray-400 mt-1">
-            {{ tables.length }} tables available
+            {{ tables.length }} {{ $t('total_tables') }}
           </p>
         </div>
         <!-- Search -->
         <div class="relative">
-          <MagnifyingGlassIcon class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <MagnifyingGlassIcon :class="['absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500', $page.props.db_viewer.locale === 'ar' ? 'right-3' : 'left-3']" />
           <input
             v-model="search"
             type="text"
-            placeholder="Filter tables…"
-            class="pl-9 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-violet-500 w-64"
+            :placeholder="$t('filter_by_name')"
+            :class="['py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-violet-500 w-64', $page.props.db_viewer.locale === 'ar' ? 'pr-9 pl-4' : 'pl-9 pr-4']"
           />
         </div>
       </div>
@@ -39,7 +39,7 @@
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-white font-mono truncate">{{ table.name }}</p>
               <p class="text-xs text-gray-500 mt-0.5">
-                {{ table.row_count.toLocaleString() }} rows
+                {{ table.row_count.toLocaleString() }} {{ $t('rows') }}
               </p>
             </div>
             <ArrowRightIcon class="w-4 h-4 text-gray-700 group-hover:text-violet-400 group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-0.5" />
@@ -49,7 +49,7 @@
         <!-- Empty -->
         <div v-if="!filteredTables.length" class="col-span-full py-16 text-center">
           <CircleStackIcon class="w-10 h-10 text-gray-700 mx-auto mb-3" />
-          <p class="text-gray-500 text-sm">No tables match your search</p>
+          <p class="text-gray-500 text-sm">{{ $t('no_tables_found') }}</p>
         </div>
       </div>
     </div>
